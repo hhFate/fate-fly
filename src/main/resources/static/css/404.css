@@ -1,0 +1,192 @@
+@font-face {
+    font-family: 'Titillium Web';
+    font-style: normal;
+    font-weight: 200;
+}
+
+body, html {
+    height: 100%;
+    width: 100%
+}
+
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%
+}
+
+body {
+    background-image: url(../images/404/error-bkg.png);
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.428571429;
+    background-color: #e4e6e5;
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased !important
+}
+
+p {
+    margin: 0 0 10px
+}
+
+#page-404 .container {
+    min-width: 100%;
+    width: 100%
+}
+
+.page-404-content * {
+    font-family: "Titillium Web", sans-serif;
+    z-index: 9
+}
+
+.page-404-content {
+    color: #bdbdbd;
+    margin: 0 auto;
+    padding-top: 50px;
+    width: 696px;
+}
+
+.page-404-content h1 {
+    color: #bdbdbd;
+    font-size: 99px;
+    font-weight: 700;
+    margin: 0;
+    text-align: center
+}
+
+.page-404-content h1 small {
+    color: #bdbdbd;
+    font-size: 42px;
+    font-weight: 700
+}
+
+.page-404-content p {
+    font-size: 39px;
+    margin-top: 95px;
+    text-align: center;
+    position: relative;
+}
+
+.page-404-content .error-overlay {
+    left: 185px;
+    position: absolute;
+    top: -32px
+}
+
+.page-404-content a {
+    color: #5f5f5f;
+    display: block;
+    font-size: 37px;
+    font-weight: 600;
+    margin: 147px auto 0;
+    text-align: center;
+    width: 157px;
+    text-decoration: none;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.page-404-content a:after {
+    background-color: #17aedf;
+    content: ' ';
+    display: block;
+    height: 7px;
+    width: 100%
+}
+
+.page-404-content a img, .page-404-content a span {
+    vertical-align: middle
+}
+
+.page-404-content a:hover {
+    text-decoration: none
+}
+
+#page-404 .error-code {
+    bottom: -300px;
+    height: 454px;
+    position: absolute;
+    right: -300px;
+    width: 562px;
+    z-index: -1;
+}
+
+@media (max-width: 767px) {
+    .page-404-content {
+        width: 100%
+    }
+
+    .page-404-content h1 {
+        font-size: 50px
+    }
+
+    .page-404-content p {
+        font-size: 30px;
+        margin-top: 60px;
+        z-index: -1;
+    }
+
+    .page-404-content .error-overlay {
+        width: 207px;
+        height: auto;
+        left: 50%;
+        margin-left: -85px
+    }
+
+    .page-404-content a {
+        font-size: 30px;
+        margin: 122px auto 0;
+        width: 122px
+    }
+
+    .page-404-content a img, .page-404-content a span {
+        max-width: 27%;
+        width: 100%;
+        height: auto
+    }
+
+    .page-404-content a:after {
+        height: 5px
+    }
+
+    #page-404 .error-code {
+        height: auto;
+        right: 0;
+        width: 420px
+    }
+}
+
+@media all and (max-width: 400px) {
+    .page-404-content h1 {
+        font-size: 26px
+    }
+
+    .page-404-content p {
+        font-size: 22px
+    }
+
+    .page-404-content .error-overlay {
+        width: 147px;
+        height: auto;
+        left: 50%;
+        margin-left: -58px;
+        top: -14px
+    }
+
+    .page-404-content a {
+        font-size: 24px;
+        margin: 80px auto 0;
+        width: 98px
+    }
+
+    #page-404 .error-code {
+        height: 237px;
+        right: 3%;
+        width: 291px;
+        top: 562px
+    }
+}

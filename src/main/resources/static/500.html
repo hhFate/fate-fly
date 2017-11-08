@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style type="text/css">
+        body {
+            background: url("images/500/500-bg.png") 0 -90px no-repeat;
+            background-size: 100%;
+            background-color: #2b6999;
+        }
+
+        .e500-text {
+            display: block;
+            width: 434px;
+            height: 180px;
+            margin: 200px auto 20px;
+        }
+
+        .btn {
+            display: block;
+            width: 200px;
+            padding: 10px;
+            margin: 0 auto;
+            text-decoration: none;
+            border: 2px solid rgba(105, 188, 228, .6);
+            border-radius: 50px;
+            font-size: 24px;
+            text-align: center;
+            color: #6bbee5;
+        }
+
+        .e-text {
+            color: #6bbee5;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .btn-link {
+            color: #fff;
+            background: transparent;
+            border: 0;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+    <title>500哟</title>
+</head>
+<body>
+<img class="e500-text" src="images/500/500-text.png">
+<div class="e-text">
+    <p>The page you are looking for has sunk into the sea~!</p>
+    <p>咦，您要访问的页面沉入海底了~!</p>
+</div>
+<a class="btn" href="/">返回首页</a>
+<a class="btn btn-link" href="javascript:showErrors()">错误信息</a>
+<script id="errorMsg" type="text/template">
+    <pre>${ex}</pre>
+    <div>
+        ${errorMsg}
+    </div>
+</script>
+<script src="//open.reinforce.cn/jquery/2.2.4/jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+<script>
+    var showErrors = function () {
+        layui.use('layer', function () {
+
+            var layer = layui.layer;
+            layer.open({
+                type: 1,
+                offset: '100px',
+                title: '错误信息',
+                area: ['90%', '80%'],
+                content: $("#errorMsg").html()
+            });
+
+        });
+
+    }
+</script>
+</body>
+</html>
