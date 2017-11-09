@@ -1,6 +1,6 @@
 package cn.reinforce.web.fly.config;
 
-import cn.reinforce.web.fly.FateFlyApplication;
+import cn.reinforce.web.FateFlyApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;

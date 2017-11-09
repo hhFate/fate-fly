@@ -18,8 +18,8 @@ public class IndexCtl {
     public ModelAndView index(HttpServletRequest request){
         ModelAndView mv = new ModelAndView("index");
 
-        mv.addObject("request", request);
-        mv.addObject("hello", "1ad133");
+
+        mv.addObject("hello", "1addasd133");
         return mv;
     }
 }

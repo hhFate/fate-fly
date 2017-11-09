@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.reinforce.web.fly.dao.ThemeTagMapper">
+    <resultMap id="BaseResultMap" type="cn.reinforce.web.fly.model.ThemeTag">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="last_used" jdbcType="TIMESTAMP" property="lastUsed"/>
+        <result column="tag_name" jdbcType="VARCHAR" property="tagName"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, last_used, tag_name, uid
+  </sql>
+    <select id="find" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from fly_theme_tag
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="findByNameAndUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from fly_theme_tag
+        where tag_name = #{tagName,jdbcType=VARCHAR}
+        <if test="uid!=0">
+            and uid = #{uid,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="pageByDateAndUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from fly_theme_tag
+        <if test="uid!=0">
+            where uid = #{uid,jdbcType=VARCHAR}
+        </if>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="random" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from fly_theme_tag where id>=RAND() * (SELECT MAX(id) FROM fly_theme_tag)
+        limit 0,#{pageSize}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+    delete from fly_theme_tag
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="save" parameterType="cn.reinforce.web.fly.model.ThemeTag">
+    insert into fly_theme_tag (id, last_used, tag_name,
+      uid)
+    values (#{id,jdbcType=INTEGER}, #{lastUsed,jdbcType=TIMESTAMP}, #{tagName,jdbcType=VARCHAR}, 
+      #{uid,jdbcType=INTEGER})
+  </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.reinforce.web.fly.model.ThemeTag">
+        update fly_theme_tag
+        <set>
+            <if test="lastUsed != null">
+                last_used = #{lastUsed,jdbcType=TIMESTAMP},
+            </if>
+            <if test="tagName != null">
+                tag_name = #{tagName,jdbcType=VARCHAR},
+            </if>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="update" parameterType="cn.reinforce.web.fly.model.ThemeTag">
+    update fly_theme_tag
+    set last_used = #{lastUsed,jdbcType=TIMESTAMP},
+      tag_name = #{tagName,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

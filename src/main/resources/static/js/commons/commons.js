@@ -10,6 +10,7 @@ var response_error = function(data){
 		toastr.error("系统内部错误");
 	else if (data.status == 200) {
 		toastr.error("登录超时，为保证您填写的内容不丢失，请勿刷新页面，并在新开页面中重新登录");
-	} else
-		toastr.error("通信异常");
+	} else{
+        toastr.error("通信异常");
+	}
 }

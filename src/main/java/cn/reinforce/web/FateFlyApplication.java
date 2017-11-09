@@ -1,4 +1,4 @@
-package cn.reinforce.web.fly;
+package cn.reinforce.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

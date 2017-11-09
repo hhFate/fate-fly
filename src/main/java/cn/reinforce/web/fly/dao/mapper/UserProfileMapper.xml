@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.reinforce.web.fly.dao.UserProfileMapper">
+  <resultMap id="BaseResultMap" type="cn.reinforce.web.fly.model.UserProfile">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="email_status" jdbcType="BIT" property="emailStatus" />
+    <result column="head_icon_big" jdbcType="VARCHAR" property="avatarBig" />
+    <result column="head_icon_hd" jdbcType="VARCHAR" property="avatarHd" />
+    <result column="head_icon_local" jdbcType="VARCHAR" property="avatarLocal" />
+    <result column="head_icon_mid" jdbcType="VARCHAR" property="avatarMid" />
+    <result column="head_icon_small" jdbcType="VARCHAR" property="avatarSmall" />
+    <result column="mobile_status" jdbcType="BIT" property="mobileStatus" />
+    <result column="qq" jdbcType="VARCHAR" property="qq" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, address, birthday, email_status, head_icon_big, head_icon_hd, head_icon_local, 
+    head_icon_mid, head_icon_small, mobile_status, qq, sex, uid
+  </sql>
+  <select id="find" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fly_user_profile
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findByUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_user_profile
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="cn.reinforce.web.fly.model.UserProfile">
+    insert into fly_user_profile (address, birthday,
+      email_status, head_icon_big, head_icon_hd, 
+      head_icon_local, head_icon_mid, head_icon_small, 
+      mobile_status, qq, sex, uid
+      )
+    values (#{address,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE},
+      #{emailStatus,jdbcType=BIT}, #{avatarBig,jdbcType=VARCHAR}, #{avatarHd,jdbcType=VARCHAR},
+      #{avatarLocal,jdbcType=VARCHAR}, #{avatarMid,jdbcType=VARCHAR}, #{avatarSmall,jdbcType=VARCHAR},
+      #{mobileStatus,jdbcType=BIT}, #{qq,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{uid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="update" parameterType="cn.reinforce.web.fly.model.UserProfile">
+    update fly_user_profile
+    set address = #{address,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      email_status = #{emailStatus,jdbcType=BIT},
+      head_icon_big = #{avatarBig,jdbcType=VARCHAR},
+      head_icon_hd = #{avatarHd,jdbcType=VARCHAR},
+      head_icon_local = #{avatarLocal,jdbcType=VARCHAR},
+      head_icon_mid = #{avatarMid,jdbcType=VARCHAR},
+      head_icon_small = #{avatarSmall,jdbcType=VARCHAR},
+      mobile_status = #{mobileStatus,jdbcType=BIT},
+      qq = #{qq,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=CHAR},
+      uid = #{uid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

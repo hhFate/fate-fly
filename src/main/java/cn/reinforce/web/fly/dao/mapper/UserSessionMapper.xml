@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.reinforce.web.fly.dao.UserSessionMapper">
+    <resultMap id="BaseResultMap" type="cn.reinforce.web.fly.model.UserSession">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="last_login_date" jdbcType="TIMESTAMP" property="lastLoginDate"/>
+        <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp"/>
+        <result column="login_date" jdbcType="TIMESTAMP" property="loginDate"/>
+        <result column="login_ip" jdbcType="VARCHAR" property="loginIp"/>
+        <result column="m_session_id" jdbcType="VARCHAR" property="mSessionId"/>
+        <result column="session_id" jdbcType="VARCHAR" property="sessionId"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="uid" jdbcType="VARCHAR" property="uid"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, last_login_date, last_login_ip, login_date, login_ip, m_session_id, session_id, 
+    type, uid
+  </sql>
+    <select id="find" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from fly_user_session
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from fly_user_session
+        where uid = #{uid,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.String">
+    delete from fly_user_session
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="cn.reinforce.web.fly.model.UserSession">
+        <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+            SELECT uuid()
+        </selectKey>
+        insert into fly_user_session (id, last_login_date, last_login_ip,
+        login_date, login_ip, m_session_id,
+        session_id, type, uid
+        )
+        values (#{id}, #{lastLoginDate,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR},
+        #{loginDate,jdbcType=TIMESTAMP}, #{loginIp,jdbcType=VARCHAR}, #{mSessionId,jdbcType=VARCHAR},
+        #{sessionId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}
+        )
+    </insert>
+    <update id="update" parameterType="cn.reinforce.web.fly.model.UserSession">
+    update fly_user_session
+    set last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      login_date = #{loginDate,jdbcType=TIMESTAMP},
+      login_ip = #{loginIp,jdbcType=VARCHAR},
+      m_session_id = #{mSessionId,jdbcType=VARCHAR},
+      session_id = #{sessionId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

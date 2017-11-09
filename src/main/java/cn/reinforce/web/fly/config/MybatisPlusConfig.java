@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableTransactionManagement
-@MapperScan({"cn.reinforce.cloud.dao*","cn.reinforce.cloud.*.dao*"})
+@MapperScan({"cn.reinforce.web.fly.dao*"})
 public class MybatisPlusConfig {
 
     @Autowired

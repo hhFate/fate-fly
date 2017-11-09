@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.reinforce.web.fly.dao.ForumMapper">
+  <resultMap id="BaseResultMap" type="cn.reinforce.web.fly.model.Forum">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="forum_desc" jdbcType="VARCHAR" property="forumDesc" />
+    <result column="forum_name" jdbcType="VARCHAR" property="forumName" />
+    <result column="forum_order" jdbcType="INTEGER" property="forumOrder" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="is_delete" jdbcType="BIT" property="delete" />
+    <result column="parent_forum_id" jdbcType="INTEGER" property="parentForumId" />
+    <association property="parentForum" column="parent_forum_id" javaType="cn.reinforce.web.fly.model.Forum" select="cn.reinforce.web.fly.dao.ForumMapper.find"/>
+    <collection property="childForums" column="fid" javaType="ArrayList" ofType="Forum" select="cn.reinforce.web.fly.dao.ForumMapper.searchByParent"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    fid, forum_desc, forum_name, forum_order, type, parent_forum_id
+  </sql>
+  <select id="find" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fly_forum
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+
+  <select id="searchByParent" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_forum
+    where parent_forum_id = #{parentId,jdbcType=INTEGER} order by forum_order asc
+  </select>
+
+  <select id="searchRoot" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_forum
+    where parent_forum_id is null and is_delete=false
+  </select>
+
+  <select id="searchChildPoint" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_forum
+    where parent_forum_id is not null and is_delete=false
+  </select>
+
+  <select id="checkForumName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_forum
+    where  is_delete=false and parent_forum_id=#{parentFid,jdbcType=INTEGER} and forum_name=#{forumName,jdbcType=VARCHAR}
+  </select>
+
+  <update id="delete" parameterType="java.lang.Integer">
+    update fly_forum set is_delete=true
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <insert id="save"  useGeneratedKeys="true" keyProperty="fid" parameterType="cn.reinforce.web.fly.model.Forum">
+    insert into fly_forum (forum_desc, forum_name, forum_order,
+      type, parent_forum_id)
+    values (#{forumDesc,jdbcType=VARCHAR}, #{forumName,jdbcType=VARCHAR}, #{forumOrder,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{parentForumId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.reinforce.web.fly.model.Forum">
+    update fly_forum
+    <set>
+      <if test="forumDesc != null">
+        forum_desc = #{forumDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="forumName != null">
+        forum_name = #{forumName,jdbcType=VARCHAR},
+      </if>
+      <if test="forumOrder != null">
+        forum_order = #{forumOrder,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="parentForumId != null">
+        parent_forum_id = #{parentForumId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="update" parameterType="cn.reinforce.web.fly.model.Forum">
+    update fly_forum
+    set 
+      forum_desc = #{forumDesc,jdbcType=VARCHAR},
+      forum_name = #{forumName,jdbcType=VARCHAR},
+      forum_order = #{forumOrder,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      parent_forum_id = #{parentForumId,jdbcType=INTEGER}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+</mapper>

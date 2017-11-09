@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.reinforce.web.fly.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="cn.reinforce.web.fly.model.User">
+        <id column="uid" jdbcType="VARCHAR" property="uid"/>
+        <result column="activate_time" jdbcType="BIGINT" property="activateTime"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="id_card" jdbcType="VARCHAR" property="idCard"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="password_lock" jdbcType="BIT" property="passwordLock"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="user_type" jdbcType="INTEGER" property="userType"/>
+    </resultMap>
+    <resultMap id="ProfileResultMap" type="cn.reinforce.web.fly.model.User" extends="BaseResultMap">
+        <association property="profile" column="uid" javaType="cn.reinforce.web.fly.model.UserProfile"
+                     select="cn.reinforce.web.fly.dao.UserProfileMapper.findByUser"/>
+    </resultMap>
+    <sql id="Login_List">
+    u.uid, username, activate_time, email, avatar, mobile, nickname, real_name, id_card, status, password, password_lock, state, user_type
+  </sql>
+    <sql id="User_Info_List">
+    u.uid, username, activate_time, email, avatar, mobile, nickname, real_name, id_card, status, state, user_type
+  </sql>
+
+
+    <select id="find" resultMap="ProfileResultMap">
+        select
+        <include refid="Login_List"/>
+        from fly_user u
+        where uid = #{uid,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByMobile" resultMap="ProfileResultMap">
+        select
+        <include refid="Login_List"/>
+        from fly_user u
+        where mobile = #{mobile,jdbcType=VARCHAR} and u.state=1
+    </select>
+
+    <select id="findByLoginName" resultMap="ProfileResultMap">
+        select
+        <include refid="Login_List"/>
+        from fly_user u
+        where (email = #{loginName,jdbcType=VARCHAR} or mobile = #{loginName,jdbcType=VARCHAR} or username =
+        #{loginName,jdbcType=VARCHAR}) and state = #{state,jdbcType=INTEGER}
+    </select>
+    <select id="findByNickName" resultMap="BaseResultMap">
+        select
+        <include refid="Login_List"/>
+        from fly_user u
+        where nickname = #{nickname,jdbcType=VARCHAR} and state = #{state,jdbcType=INTEGER}
+    </select>
+    <select id="findByUsername" resultMap="BaseResultMap">
+        select
+        <include refid="Login_List"/>
+        from fly_user u
+        where username = #{username,jdbcType=VARCHAR} and state = #{state,jdbcType=INTEGER}
+    </select>
+
+    <select id="searchByMobile" resultMap="BaseResultMap">
+        select
+        <include refid="Login_List"/>
+        from fly_user u
+        where state = 1 and mobile like #{mobile,jdbcType=VARCHAR}
+    </select>
+
+
+
+    <update id="delete" parameterType="java.lang.Integer">
+    update fly_user set state=2
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+    <insert id="save" useGeneratedKeys="true" keyProperty="uid" parameterType="cn.reinforce.web.fly.model.User">
+        <selectKey keyProperty="uid" order="BEFORE" resultType="java.lang.String">
+            SELECT uuid()
+        </selectKey>
+        insert into fly_user (uid, username, activate_time, email, mobile, nickname, real_name, id_card, password,
+        state, user_type, sys_type, leader)
+        values (#{uid}, #{username,jdbcType=VARCHAR},#{activateTime,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR},
+        #{mobile,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR},
+        #{idCard,jdbcType=VARCHAR},
+        #{password,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
+        #{userType,jdbcType=INTEGER},#{sysType,jdbcType=INTEGER},#{leader,jdbcType=BIT})
+    </insert>
+    <update id="updateAvatar">
+    update fly_user
+    set avatar = #{avatar,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+
+    <update id="update" parameterType="cn.reinforce.web.fly.model.User">
+    update fly_user
+    set activate_time = #{activateTime,jdbcType=TIMESTAMP},
+    email = #{email,jdbcType=VARCHAR},
+    username = #{username,jdbcType=VARCHAR},
+    mobile = #{mobile,jdbcType=VARCHAR},
+    nickname = #{nickname,jdbcType=VARCHAR},
+    real_name = #{realName,jdbcType=VARCHAR},
+    id_card = #{idCard,jdbcType=VARCHAR},
+    password = #{password,jdbcType=VARCHAR},
+    password_lock = #{passwordLock,jdbcType=BIT},
+    state = #{state,jdbcType=INTEGER},
+    user_type = #{userType,jdbcType=INTEGER},
+    sys_type = #{sysType,jdbcType=INTEGER},
+    leader = #{leader,jdbcType=BIT}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+    <update id="batchDel" parameterType="cn.reinforce.web.fly.model.User">
+        update fly_user
+        set state=2
+        where uid in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

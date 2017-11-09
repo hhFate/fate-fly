@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(DruidSource.class)
 //mybaits dao 搜索路径
-@MapperScan({"cn.reinforce.cloud.dao", "cn.reinforce.cloud.*.dao"})
+@MapperScan({"cn.reinforce.web.fly.dao"})
 public class DruidConfig {
 
     @Bean

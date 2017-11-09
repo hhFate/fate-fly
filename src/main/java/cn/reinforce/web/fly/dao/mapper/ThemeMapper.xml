@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.reinforce.web.fly.dao.ThemeMapper">
+  <resultMap id="ResultMap" type="cn.reinforce.web.fly.model.Theme">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="author_id" jdbcType="VARCHAR" property="authorId" />
+    <result column="down" jdbcType="INTEGER" property="down" />
+    <result column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="forum_name" jdbcType="VARCHAR" property="forumName" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="last_modify" jdbcType="TIMESTAMP" property="lastModify" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="publish_date" jdbcType="TIMESTAMP" property="publishDate" />
+    <result column="replies" jdbcType="INTEGER" property="replies" />
+    <result column="reprint" jdbcType="BIT" property="reprint" />
+    <result column="search" jdbcType="INTEGER" property="search" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="tags" jdbcType="VARCHAR" property="tags" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="title_img" jdbcType="VARCHAR" property="titleImg" />
+    <result column="up" jdbcType="INTEGER" property="up" />
+    <result column="views" jdbcType="INTEGER" property="views" />
+    <result column="guid" jdbcType="VARCHAR" property="guid" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="contentView" jdbcType="LONGVARCHAR" property="contentView" />
+    <result column="img_list" jdbcType="LONGVARCHAR" property="imgList" />
+    <result column="url" jdbcType="LONGVARCHAR" property="url" />
+    <result column="js" jdbcType="VARCHAR" property="js" />
+    <result column="css" jdbcType="VARCHAR" property="css" />
+    <result column="is_push" jdbcType="BIT" property="push" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, author, author_id, down, fid, forum_name, is_delete, last_modify, priority, publish_date,
+    replies, reprint, search, state, tags, title, title_img, up, views, guid,content, contentView, img_list, url, js, css, is_push
+  </sql>
+  <select id="find" parameterType="java.lang.Integer" resultMap="ResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fly_theme
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="findAll" parameterType="java.lang.Boolean" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_theme
+    where is_delete = #{isDelete}
+  </select>
+
+  <select id="pageByFid" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_theme
+    where is_delete=false
+    <if test="fid != 0">
+       and fid = #{fid,jdbcType=INTEGER}
+    </if>
+    <if test="state != 0">
+       and state = #{state,jdbcType=INTEGER}
+    </if>
+     order by
+    <if test="priority">
+      priority desc,
+    </if>
+     publish_date
+    <if test="timeOrder">
+      desc
+    </if>
+    <if test="!timeOrder">
+       asc
+    </if>
+    limit #{start},#{pageSize}
+  </select>
+
+  <select id="countByFid" resultType="java.lang.Long">
+    select count(id) from fly_theme
+    where is_delete=false
+    <if test="fid != 0">
+      and fid = #{fid,jdbcType=INTEGER}
+    </if>
+    <if test="state != 0">
+      and state = #{state,jdbcType=INTEGER}
+    </if>
+  </select>
+
+
+  <select id="pageByUid" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_theme
+    where is_delete=false
+    <if test="uid != 0">
+      and author_id = #{uid,jdbcType=VARCHAR}
+    </if>
+    order by
+    publish_date
+    <if test="order">
+      desc
+    </if>
+    <if test="!order">
+      asc
+    </if>
+    limit #{start},#{pageSize}
+  </select>
+
+  <select id="countByUid" resultType="java.lang.Long">
+    select count(id) from fly_theme
+    where is_delete=false
+    <if test="uid != 0">
+      and author_id = #{uid,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="pageByTag" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_theme
+    where is_delete=false
+    <if test="tag != null and tag !=''">
+      and tags like CONCAT('%', #{tag,jdbcType=VARCHAR},'%')
+    </if>
+    order by publish_date desc limit #{start},#{pageSize}
+  </select>
+
+  <select id="countByTag" resultType="java.lang.Long">
+    select count(id) from fly_theme
+    where is_delete=false
+    <if test="tag != null and tag !=''">
+      and tags like CONCAT('%', #{tag,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+
+  <select id="countViews" resultType="java.lang.Long">
+    select COALESCE(sum(views),0) from fly_theme
+    where is_delete=false
+    <if test="fid != 0">
+      and fid = #{fid,jdbcType=INTEGER}
+    </if>
+    <if test="state != 0">
+      and state = #{state,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="statistics" resultType="java.lang.Long">
+    select count(id) from fly_theme
+    where is_delete=false and fid = #{fid,jdbcType=INTEGER}
+    <if test="dateType==0">
+      and DATEDIFF(NOW(),publish_date)= #{day,jdbcType=INTEGER}
+    </if>
+    <if test="dateType==1">
+      and DATE_FORMAT(publish_date,'%Y-%m')= #{day,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="findByDateAndTitle" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_theme
+    where is_delete=false and title=#{title,jdbcType=VARCHAR} and DATE_FORMAT(publish_date,'%Y-%m-%d')=#{date,jdbcType=VARCHAR}
+  </select>
+
+  <select id="pageHot" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_theme
+    where is_delete=false order by views desc limit #{start},#{pageSize}
+  </select>
+
+  <select id="pageSearchHot" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_theme
+    where is_delete=false order by search desc limit #{start},#{pageSize}
+  </select>
+
+  <select id="findLastTheme" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from fly_theme
+    where is_delete=false and fid=#{fid,jdbcType=INTEGER} order by publish_date desc limit 0,1
+  </select>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from fly_theme
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="cn.reinforce.web.fly.model.Theme">
+    insert into fly_theme (author, author_id,
+      down, fid, forum_name,
+      is_delete, last_modify, priority, 
+      publish_date, replies, reprint, 
+      search, state, tags, 
+      title, title_img, up, views,
+      guid, content, contentView, 
+      img_list, url, js, css, is_push)
+    values (#{author,jdbcType=VARCHAR}, #{authorId,jdbcType=VARCHAR},
+      #{down,jdbcType=INTEGER}, #{fid,jdbcType=INTEGER}, #{forumName,jdbcType=VARCHAR},
+      #{isDelete,jdbcType=BIT}, #{lastModify,jdbcType=TIMESTAMP}, #{priority,jdbcType=INTEGER}, 
+      #{publishDate,jdbcType=TIMESTAMP}, #{replies,jdbcType=INTEGER}, #{reprint,jdbcType=BIT}, 
+      #{search,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{tags,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{titleImg,jdbcType=VARCHAR}, #{up,jdbcType=INTEGER}, #{views,jdbcType=INTEGER},
+      #{guid,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}, #{contentView,jdbcType=LONGVARCHAR}, 
+      #{imgList,jdbcType=LONGVARCHAR}, #{url,jdbcType=LONGVARCHAR}, #{js,jdbcType=VARCHAR}, #{css,jdbcType=VARCHAR}, #{push,jdbcType=BIT})
+  </insert>
+  <update id="update" parameterType="cn.reinforce.web.fly.model.Theme">
+    update fly_theme
+    set author = #{author,jdbcType=VARCHAR},
+      author_id = #{authorId,jdbcType=VARCHAR},
+      down = #{down,jdbcType=INTEGER},
+      fid = #{fid,jdbcType=INTEGER},
+      forum_name = #{forumName,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=BIT},
+      last_modify = #{lastModify,jdbcType=TIMESTAMP},
+      priority = #{priority,jdbcType=INTEGER},
+      publish_date = #{publishDate,jdbcType=TIMESTAMP},
+      replies = #{replies,jdbcType=INTEGER},
+      reprint = #{reprint,jdbcType=BIT},
+      search = #{search,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      tags = #{tags,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      title_img = #{titleImg,jdbcType=VARCHAR},
+      up = #{up,jdbcType=INTEGER},
+      views = #{views,jdbcType=INTEGER},
+      guid = #{guid,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR},
+      contentView = #{contentView,jdbcType=LONGVARCHAR},
+      img_list = #{imgList,jdbcType=LONGVARCHAR},
+      url = #{url,jdbcType=LONGVARCHAR},
+      js = #{js,jdbcType=VARCHAR},
+      css = #{css,jdbcType=VARCHAR},
+      is_push = #{push,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="multiDelete">
+    update fly_theme
+    set  is_delete = true
+    where id in
+    <foreach collection="list" item="ids"  open="(" separator="," close=")">
+      #{ids}
+    </foreach>
+  </update>
+</mapper>
