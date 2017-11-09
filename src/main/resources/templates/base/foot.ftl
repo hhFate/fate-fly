@@ -6,5 +6,5 @@
 <script src="//open.reinforce.cn/layui/2.1.7/layui.js"></script>
 <script src="//open.reinforce.cn/toastr/2.1.3/toastr.min.js"></script>
 <script src="//open.reinforce.cn/sweetalert/1.1.3/sweetalert.min.js"></script>
-<script src="js/function/header.js"></script>
+<script src="js/commons/header.js"></script>
 <script src="js/commons/commons.js"></script>

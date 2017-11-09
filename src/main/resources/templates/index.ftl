@@ -12,10 +12,18 @@
 </head>
 
 <body>
-
 <#include "/base/header.ftl">
-Hello World!123dasdas
+<div class="layui-container">
+
+    Hello World!12111
 ${hello}
+</div>
 <#include "/base/foot.ftl">
+<script>
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
 </body>
 </html>

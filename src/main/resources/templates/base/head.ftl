@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="//open.reinforce.cn/toastr/2.1.3/toastr.min.css" >
 <link rel="stylesheet" href="//open.reinforce.cn/sweetalert/1.1.3/sweetalert.min.css" >
 <link rel="stylesheet" href="//open.reinforce.cn/pace/1.0.2/themes/green/pace-theme-minimal.css" >
-<link rel="stylesheet" href="css/style2.css" >
+<link rel="stylesheet" href="css/style.css" >
 ${statisticsHead}
 <!--[if lte IE 10 ]><div class="alert alert-danger ie-warning" data-alert>
   <button type="button" class="close">&times;</button>

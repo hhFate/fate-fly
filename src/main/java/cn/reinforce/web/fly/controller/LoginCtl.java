@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/op")
 public class LoginCtl {
 
     private static final Logger LOG = Logger.getLogger(LoginCtl.class);
@@ -73,7 +72,7 @@ public class LoginCtl {
         return map;
     }
 
-    @GetMapping("/login")
+    @GetMapping("/op/login")
     @RequestLog
     public void toSso(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
@@ -97,7 +96,7 @@ public class LoginCtl {
         }
     }
 
-    @GetMapping("/login/sso")
+    @GetMapping("/op/login/sso")
     @ResponseBody
     @RequestLog
     public Object toSso(String uid, String userSessionId, String accessToken, String appKey, String sign, long timestamp, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
@@ -134,7 +133,7 @@ public class LoginCtl {
         return null;
     }
 
-    @GetMapping("/login/accessDenied")
+    @GetMapping("/op/login/accessDenied")
     public String accessDenied() {
         return "login/accessDenied";
     }

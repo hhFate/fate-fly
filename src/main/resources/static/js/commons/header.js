@@ -25,12 +25,6 @@ function logout() {
 
 }
 
-function keyDown(event) {
-    if (event.keyCode == 13) {
-        $("#loginsubmit").click();
-    }
-}
-
 var dialog = {};
 dialog.alert = function (content) {
     swal("提示!", content, "warning");
@@ -40,6 +34,7 @@ dialog.alert = function (content) {
 toastr.options.escapeHtml = true;
 toastr.options.closeButton = true;
 toastr.options.progressBar = true;
+
 $(function () {
 
     $("img.lazy").lazyload({
