@@ -19,7 +19,8 @@ public class IndexCtl {
         ModelAndView mv = new ModelAndView("index");
 
 
-        mv.addObject("hello", "1addasd133");
+        mv.addObject("hello", "1ad3");
+        System.out.println(111222);
         return mv;
     }
 }

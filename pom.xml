@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.reinforce.web</groupId>
-    <artifactId>fate-fly</artifactId>
+    <artifactId>fate-fly-spring-boot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>fate-fly</name>
+    <name>fate-fly-spring-boot</name>
     <description>Java社区</description>
 
     <parent>
@@ -136,9 +136,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--<configuration>-->
-                    <!--<fork>true</fork>-->
-                <!--</configuration>-->
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
