@@ -19,7 +19,7 @@ public class IndexCtl {
         ModelAndView mv = new ModelAndView("index");
 
         mv.addObject("request", request);
-        mv.addObject("hello", "1222");
+        mv.addObject("hello", "1ad133");
         return mv;
     }
 }
